@@ -1,0 +1,13 @@
+server:
+  port: 56010
+
+spring:
+  application:
+    name: nacos-restful-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+nacos‐restful‐provider:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #com.netflix.loadbalancer.RandomRule：负载均衡类路径。

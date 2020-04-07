@@ -1,0 +1,29 @@
+server:
+  port: 56040 #启动端口，命令行注入
+
+spring:
+  application:
+    name: dubbo-service2
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+#dubbo配置
+
+dubbo:
+  scan:
+    base-packages: com.polymerizationPay.microservice.service2.service
+    #dubbo协议
+  protocol:
+    name: dubbo
+    #端口
+    port: 20891
+  registry:
+    address: nacos://127.0.0.1:8848
+  application:
+    qos-enable: false #dubbo运维服务是否开启
+  consumer:
+    check: false #启动时是否检查依赖的服务
