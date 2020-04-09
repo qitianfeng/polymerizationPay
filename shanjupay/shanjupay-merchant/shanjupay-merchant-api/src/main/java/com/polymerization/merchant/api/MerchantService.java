@@ -10,4 +10,6 @@ public interface MerchantService {
      * @return
      */
     MerchantDTO queryMerchantById(Long merchantId);
+
+    MerchantDTO createMerchant(MerchantDTO merchantDTO);
 }
