@@ -36,6 +36,6 @@ public class GlobalExceptionHandler {
         }
         LOGGER.info("系统异常：",e);
 
-        return new RestErrorResponse(CommonErrorCode.UNKOWN.getDesc(),String.valueOf(CommonErrorCode.UNKOWN.getCode()));
+        return new RestErrorResponse(CommonErrorCode.UNKNOWN.getDesc(),String.valueOf(CommonErrorCode.UNKNOWN.getCode()));
     }
 }

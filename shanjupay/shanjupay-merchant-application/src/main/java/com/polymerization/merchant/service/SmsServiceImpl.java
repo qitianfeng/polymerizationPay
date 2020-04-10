@@ -52,7 +52,7 @@ public class SmsServiceImpl implements SmsService {
             //post请求
             ResponseEntity<Map> exchange = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
             //获取响应
-            Map exchangeBody = exchange.getBody();
+            responseMap = exchange.getBody();
         } catch (Exception e) {
 
             throw new RuntimeException("发送验证码出错");
@@ -75,7 +75,9 @@ public class SmsServiceImpl implements SmsService {
      */
     @Override
     public void checkVerifyCode(String verifyKey, String verifyCode) throws BusinessException {
+        //http://localhost:56085/sailing/verify?name=sms&verificationCode=286157&verificationKey=sms%3Af07c7b7a827a48f8a13af3de90e383f0
         String url = smsUrl + "verify?name=sms&verificationCode=" + verifyCode + "&verificationKey=" + verifyKey;
+        log.info("调用短信微服务校验验证码：url:{}", url);
         Map responseMap = null;
         try {
             //请求校验验证码

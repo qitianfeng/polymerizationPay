@@ -3,9 +3,11 @@ package com.polymerization.merchant.controller;
 import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.MerchantDTO;
 import com.polymerization.merchant.service.SmsService;
+import com.polymerization.merchant.vo.MerchantDetailVO;
 import com.polymerization.merchant.vo.MerchantRegisterVO;
 import com.shanjupay.common.domain.BusinessException;
 import com.shanjupay.common.domain.CommonErrorCode;
+import com.polymerization.merchant.utils.SecurityUtil;
 import com.shanjupay.common.util.PhoneUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
@@ -44,8 +46,8 @@ public class MerchantController {
 
 
     @ApiOperation("注册商户")
-    @ApiImplicitParam(name = "merchantRegister", value = "注册信息", required = true,
-            dataType = "MerchantRegisterVO", paramType = "body")
+   /* @ApiImplicitParam(name = "merchantRegister", value = "注册信息", required = true,
+            dataType = "MerchantRegisterVO", paramType = "body")*/
     @PostMapping("/merchants/register")
     public MerchantRegisterVO registerMerchant(@RequestBody MerchantRegisterVO merchantRegisterVO) {
         if (merchantRegisterVO == null){
@@ -84,6 +86,21 @@ public class MerchantController {
         merchantService.createMerchant(merchantDTO);
         return merchantRegisterVO;
     }
+
+    @ApiOperation("资质申请")
+    @ApiImplicitParam(name = "merchantDetailVO",value = "认证资料",
+    dataType = "MerchantDetailVO",required = true , paramType = "body")
+    @PostMapping("/my/merchants/save")
+    public void saveMerchant(@RequestBody MerchantDetailVO merchantDetailVO){
+
+        //解析token中得到的Id
+        Long merchantId = SecurityUtil.getMerchantId();
+        MerchantDTO merchantDTO = new MerchantDTO();
+        BeanUtils.copyProperties(merchantDetailVO,merchantDTO);
+        //资质申请
+        merchantService.applyMerchant(merchantId,merchantDTO);
+    }
+
 
 
 }

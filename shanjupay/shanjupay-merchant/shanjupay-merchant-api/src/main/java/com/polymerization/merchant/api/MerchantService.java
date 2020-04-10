@@ -12,4 +12,6 @@ public interface MerchantService {
     MerchantDTO queryMerchantById(Long merchantId);
 
     MerchantDTO createMerchant(MerchantDTO merchantDTO);
+
+    void applyMerchant(Long merchantId, MerchantDTO merchantDTO);
 }
