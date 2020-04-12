@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public RestErrorResponse processException(HttpServletRequest request, HttpResponse response,Exception e){
+    public RestErrorResponse processException(Exception e){
 
         //如果是自定义异常则直接取出异常
         if (e instanceof BusinessException){

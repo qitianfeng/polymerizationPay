@@ -11,9 +11,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class FastDFSClient {
-    @Value("${file.http.tracker_http_port}")
-    private static String port;
 
+    static {
+        //从classpath下获取文件对象获取路径
+        String path = new ClassPathResource("fdfs_client.conf").getPath();
+        try {
+            ClientGlobal.init(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     //图片上传
     public static String[] upload(FastDFSFile file) {
@@ -159,8 +166,8 @@ public class FastDFSClient {
             String hostString = trackerServer.getInetSocketAddress().getHostString();
 
             //http://192.168.211.132:8080/group1/M00/00/00/wKjThF1aW9CAOUJGAAClQrJOYvs424.jpg img
-//            int g_tracker_http_port = ClientGlobal.getG_tracker_http_port();
-            return "http://" + hostString + ":" + port;
+            int g_tracker_http_port = ClientGlobal.getG_tracker_http_port();
+            return "http://" + hostString + ":" + g_tracker_http_port;
         } catch (IOException e) {
             e.printStackTrace();
         }
