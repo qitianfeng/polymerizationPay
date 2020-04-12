@@ -53,7 +53,7 @@ public class PlatformParamController {
             @ApiImplicitParam(value = "应用id",name = "appId",required = true,dataType = "String",paramType = "path"),
             @ApiImplicitParam(value = "服务类型",name = "platfoemChannel",required = true,dataType = "String",paramType = "path")
     })
-    @GetMapping("/my/pay-channel-params/apps/{appId}/platform-channels/{platfoemChannel}")
+    @GetMapping("/my/pay-channel-params/apps/{appId}/platform-channels/{platformChannel}")
     public List<PayChannelParamDTO> queryPayChannelParam(@PathVariable String appId,@PathVariable String platformChannel){
         return payChannelService.queryPayChannelParamByAppIdAndPlatform(appId,platformChannel);
     }
@@ -63,7 +63,7 @@ public class PlatformParamController {
             @ApiImplicitParam(value = "服务类型",name = "platfoemChannel",required = true,dataType = "String",paramType = "path"),
             @ApiImplicitParam(value = "服务类型",name = "platfoemChannel",required = true,dataType = "String",paramType = "path")
     })
-    @GetMapping("/my/pay-channel-params/apps/{appId}/platform-channels/{platfoemChannel}/pay-channels/{payChannel}")
+    @GetMapping("/my/pay-channel-params/apps/{appId}/platform-channels/{platformChannel}/pay-channels/{payChannel}")
     public PayChannelParamDTO queryPayChannelParam(@PathVariable String appId,@PathVariable String platformChannel,@PathVariable String payChannel){
         return payChannelService.queryParamByAppPlatformAndPayChannel(appId,platformChannel,payChannel);
     }

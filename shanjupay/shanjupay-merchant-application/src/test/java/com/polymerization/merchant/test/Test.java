@@ -88,7 +88,7 @@ public class Test {
     @org.junit.Test
     public void test3(){
 
-        //测试根据服务类型查询支付渠道
+        //测试根据服务类型查询支付渠道 queryPayChannelByPlatformChannel
         List<PayChannelDTO> shanju_c2b = payChannelService.queryPayChannelByPlatformChannel("shanju_c2b");
         System.out.println(JSON.toJSONString(shanju_c2b));
 

@@ -27,11 +27,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class PayChannelServiceImpl implements PayChannelService {
 
     @Autowired
@@ -46,7 +48,7 @@ public class PayChannelServiceImpl implements PayChannelService {
     @Autowired
     PayChannelParamMapper payChannelParamMapper;
 
-    @Autowired
+    @Resource
     private Cache cache;
 
 
@@ -160,7 +162,8 @@ public class PayChannelServiceImpl implements PayChannelService {
             payChannelParam1.setAppPlatformChannelId(aLong);
             payChannelParamMapper.insert(payChannelParam1);
         }
-
+//保存到redis
+        updateCache(payChannelParamDTO.getAppId(), payChannelParamDTO.getPlatformChannelCode());
     }
 
     /**
@@ -194,7 +197,7 @@ public class PayChannelServiceImpl implements PayChannelService {
             payChannelParamList.add(payChannelParam1);
         }
         //存入缓存
-        updateCache(appId,platformChannel);
+        updateCache(appId, platformChannel);
         return payChannelParamList;
     }
 
@@ -242,9 +245,17 @@ public class PayChannelServiceImpl implements PayChannelService {
         if (exists) {
             cache.del(keyBuilder);
         }
-        List<PayChannelParamDTO> payChannelParamDTOS = queryPayChannelParamByAppIdAndPlatform(appId, platformChannel);
-        if (payChannelParamDTOS != null) {
-            cache.set(keyBuilder, JSON.toJSONString(payChannelParamDTOS));
+        Long aLong = selectIdByAppPlatformChannel(appId, platformChannel);
+        if (aLong != null){
+            List<PayChannelParamDTO> payChannelParamDTOS = new ArrayList<>();
+            List<PayChannelParam> payChannelParams = payChannelParamMapper.selectList(new LambdaQueryWrapper<PayChannelParam>().eq(PayChannelParam::getAppPlatformChannelId,aLong ));
+
+            for (PayChannelParam payChannelParam : payChannelParams) {
+                PayChannelParamDTO payChannelParam1 = new PayChannelParamDTO();
+                BeanUtils.copyProperties(payChannelParam,payChannelParam1);
+                payChannelParamDTOS.add(payChannelParam1);
+            }
+            cache.set(keyBuilder,JSON.toJSONString(payChannelParamDTOS));
         }
     }
 }
