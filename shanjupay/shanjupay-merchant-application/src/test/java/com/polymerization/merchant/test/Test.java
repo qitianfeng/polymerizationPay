@@ -6,6 +6,8 @@ import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.MerchantDTO;
 import com.polymerization.merchant.utils.SecurityUtil;
 import com.shanjupay.common.util.EncryptUtil;
+import com.shanjupay.transaction.api.dto.PayChannelDTO;
+import com.shanjupay.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -80,9 +83,14 @@ public class Test {
         System.out.println(jwt_token);
     }
 
+    @Autowired
+    PayChannelService payChannelService;
     @org.junit.Test
     public void test3(){
-        Long merchantId = SecurityUtil.getMerchantId();
+
+        //测试根据服务类型查询支付渠道
+        List<PayChannelDTO> shanju_c2b = payChannelService.queryPayChannelByPlatformChannel("shanju_c2b");
+        System.out.println(JSON.toJSONString(shanju_c2b));
 
     }
 }
