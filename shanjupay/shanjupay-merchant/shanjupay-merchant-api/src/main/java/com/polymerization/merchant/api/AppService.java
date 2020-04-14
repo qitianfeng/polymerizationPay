@@ -28,4 +28,13 @@ public interface AppService {
      * @return
      */
     List<AppDTO> queryAppByMerchant(Long merchantId);
+
+    /**
+     * 查询应用是否属于某个商户
+     * @param appId
+     * @param merchantId
+     * @return
+     * @throws BusinessException
+     */
+    Boolean queryAppInMerchant(String appId,Long merchantId) throws BusinessException;
 }

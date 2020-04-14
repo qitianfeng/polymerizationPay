@@ -93,6 +93,22 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 查询应用是否属于某个商户
+     *
+     * @param appId
+     * @param merchantId
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Boolean queryAppInMerchant(String appId, Long merchantId) throws BusinessException {
+
+        Integer integer = appMapper.selectCount(new LambdaQueryWrapper<App>().eq(App::getAppId, appId)
+                .eq(App::getMerchantId, merchantId));
+        return integer > 0;
+    }
+
+    /**
      * 校验应用名是否被使用
      * @param appName
      * @return

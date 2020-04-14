@@ -1,5 +1,7 @@
 package com.polymerization.merchant.api.dto;
 
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,7 +12,8 @@ import lombok.Data;
 public class StoreDTO {
 
     private static final long serialVersionUID = 1L;
-
+    @ApiModelProperty("门店Id")
+    // TODO: 将id转化为字符串
     private Long id;
 
     /**

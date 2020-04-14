@@ -12,12 +12,16 @@ import com.polymerization.merchant.vo.MerchantRegisterVO;
 import com.shanjupay.common.domain.BusinessException;
 import com.shanjupay.common.domain.CommonErrorCode;
 import com.shanjupay.common.util.PhoneUtil;
+import com.shanjupay.common.util.QRCodeUtil;
+import com.shanjupay.transaction.api.dto.QRCodeDto;
+import com.shanjupay.transaction.api.dto.com.shanjupay.transaction.api.TransactionService;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +32,13 @@ import java.io.IOException;
 @Api(value = "商户平台", tags = "商户平台", description = "商户平台")
 public class MerchantController {
 
+    @Value("${shanjupay.c2b.subject}")
+    private String subject;
+
+    @Value("${shanjupay.c2b.body}")
+    private String body;
+
+
     @Reference
     MerchantService merchantService;
 
@@ -37,6 +48,8 @@ public class MerchantController {
     @Reference
     AppService appService;
 
+    @Reference
+    TransactionService transactionService;
 
     @ApiOperation("根据ID查询用户")
     @ApiImplicitParam(name = "id", value = "ID号", required = true, dataType = "String")
@@ -139,6 +152,27 @@ public class MerchantController {
         Long merchantId = SecurityUtil.getMerchantId();
         MerchantDTO merchantDTO = merchantService.queryMerchantById(merchantId);
         return merchantDTO;
+    }
+
+    @ApiOperation("生成商户二维码")
+    @GetMapping("")
+    public String createCScanBStoreQRCode(@PathVariable String appId, @PathVariable Long storeId){
+        Long merchantId = SecurityUtil.getMerchantId();
+        //生成二维码连接
+        QRCodeDto qrCodeDto = new QRCodeDto();
+        qrCodeDto.setMerchantId(merchantId);
+        qrCodeDto.setAppId(appId);
+        qrCodeDto.setStoreId(storeId);
+
+        MerchantDTO merchantDTO = merchantService.queryMerchantById(merchantId);
+        qrCodeDto.setSubject(String.format(subject,merchantDTO.getUsername()));
+        qrCodeDto.setSubject(String.format(body,merchantDTO.getUsername()));
+        String storeQRCode = transactionService.createStoreQRCode(qrCodeDto);
+        try {
+            return QRCodeUtil.createQRCode(storeQRCode,200,200);
+        } catch (IOException e) {
+            throw new BusinessException(CommonErrorCode.E_200007);
+        }
     }
 
 }

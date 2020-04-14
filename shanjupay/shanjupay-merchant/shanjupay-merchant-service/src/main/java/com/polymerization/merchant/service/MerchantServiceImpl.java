@@ -2,6 +2,8 @@ package com.polymerization.merchant.service;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.MerchantDTO;
 import com.polymerization.merchant.api.dto.StaffDTO;
@@ -16,6 +18,7 @@ import com.polymerization.merchant.mapper.StoreMapper;
 import com.polymerization.merchant.mapper.StoreStaffMapper;
 import com.shanjupay.common.domain.BusinessException;
 import com.shanjupay.common.domain.CommonErrorCode;
+import com.shanjupay.common.domain.PageVO;
 import com.shanjupay.common.util.PhoneUtil;
 import com.shanjupay.user.api.TenantService;
 import com.shanjupay.user.api.dto.tenant.CreateTenantRequestDTO;
@@ -27,6 +30,9 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -248,6 +254,52 @@ public class MerchantServiceImpl implements MerchantService {
         MerchantDTO merchant1 = new MerchantDTO();
         BeanUtils.copyProperties(merchant,merchant1);
         return merchant1;
+    }
+
+    /**
+     * 分页查询商户下的门店
+     *
+     * @param storeDTO
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public PageVO<StoreDTO> queryStoreByPage(StoreDTO storeDTO, Integer pageNo, Integer pageSize) throws BusinessException {
+        Page<Store> page = new Page<>(pageNo, pageSize);
+        if (storeDTO.getMerchantId() == null || storeDTO == null){
+            throw new BusinessException(CommonErrorCode.E_100108);
+        }
+        //查询
+        IPage<Store> storeIPage = storeMapper.selectPage(page, new LambdaQueryWrapper<Store>().eq(Store::getMerchantId, storeDTO.getMerchantId()));
+
+        //转化list
+        List<Store> records = storeIPage.getRecords();
+        List<StoreDTO> storeDTOS = new ArrayList<>();
+        for (Store record : records) {
+
+            StoreDTO storeDTO1 = new StoreDTO();
+            BeanUtils.copyProperties(record,storeDTO1);
+            storeDTOS.add(storeDTO1);
+        }
+        return new PageVO<StoreDTO>(storeDTOS,storeIPage.getTotal(),pageNo,pageSize);
+    }
+
+    /**
+     * 查询门店是否属于某商户
+     *
+     * @param merchantId
+     * @param storeId
+     * @return
+     */
+    @Override
+    public Boolean queryStoreInMerchant(Long merchantId, Long storeId) {
+
+        Integer count = storeMapper.selectCount(new LambdaQueryWrapper<Store>().eq(Store::getMerchantId, merchantId)
+                .eq(Store::getId, storeId));
+
+        return count > 0;
     }
 
     private Boolean isExitStaffByUsername(String usernamr, Long merchantId) {
