@@ -2,16 +2,15 @@ package com.polymerization.merchant.controller;
 
 import com.polymerization.merchant.api.AppService;
 import com.polymerization.merchant.api.MerchantService;
-import com.polymerization.merchant.api.dto.AppDTO;
 import com.polymerization.merchant.api.dto.MerchantDTO;
+import com.polymerization.merchant.common.utils.SecurityUtil;
 import com.polymerization.merchant.service.SmsService;
-import com.polymerization.merchant.utils.FastDFSClient;
+import com.polymerization.merchant.common.intercept.utils.FastDFSClient;
 import com.polymerization.merchant.vo.FastDFSFile;
 import com.polymerization.merchant.vo.MerchantDetailVO;
 import com.polymerization.merchant.vo.MerchantRegisterVO;
 import com.shanjupay.common.domain.BusinessException;
 import com.shanjupay.common.domain.CommonErrorCode;
-import com.polymerization.merchant.utils.SecurityUtil;
 import com.shanjupay.common.util.PhoneUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
@@ -132,6 +131,14 @@ public class MerchantController {
 
         //资质申请
         merchantService.applyMerchant(merchantId, merchantDTO);
+    }
+
+    @ApiOperation("获取登录用户的商户信息")
+    @GetMapping("/my/merchants")
+    public MerchantDTO getMyMerchantInfo(){
+        Long merchantId = SecurityUtil.getMerchantId();
+        MerchantDTO merchantDTO = merchantService.queryMerchantById(merchantId);
+        return merchantDTO;
     }
 
 }

@@ -3,7 +3,7 @@ package com.polymerization.merchant.controller;
 import com.polymerization.merchant.api.AppService;
 import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.AppDTO;
-import com.polymerization.merchant.utils.SecurityUtil;
+import com.polymerization.merchant.common.utils.SecurityUtil;
 import com.shanjupay.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

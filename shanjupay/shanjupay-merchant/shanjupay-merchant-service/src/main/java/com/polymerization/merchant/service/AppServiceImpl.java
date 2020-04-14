@@ -3,7 +3,6 @@ package com.polymerization.merchant.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.polymerization.merchant.api.AppService;
 import com.polymerization.merchant.api.dto.AppDTO;
-import com.polymerization.merchant.convert.AppCovert;
 import com.polymerization.merchant.entity.App;
 import com.polymerization.merchant.entity.Merchant;
 import com.polymerization.merchant.mapper.AppMapper;
@@ -12,8 +11,10 @@ import com.shanjupay.common.domain.BusinessException;
 import com.shanjupay.common.domain.CommonErrorCode;
 import com.shanjupay.common.util.RandomStringUtil;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,9 +52,12 @@ public class AppServiceImpl implements AppService {
         //保存应用信息
         appDTO.setAppId(RandomStringUtil.getRandomString(32));
         appDTO.setMerchantId(merchantId);
-        App entity = AppCovert.INSTANCE.dto2App(appDTO);
+        App entity = new App();// AppCovert.INSTANCE.dto2App(appDTO);
+        BeanUtils.copyProperties(appDTO,entity);
         appMapper.insert(entity);
-        return AppCovert.INSTANCE.entity2DTO(entity);
+        AppDTO appDTO1 = new AppDTO();
+        BeanUtils.copyProperties(entity,appDTO1);
+        return appDTO1;
     }
 
     /**
@@ -65,7 +69,8 @@ public class AppServiceImpl implements AppService {
     @Override
     public AppDTO getAppById(String id) throws BusinessException {
         App app = appMapper.selectById(id);
-        AppDTO appDTO = AppCovert.INSTANCE.entity2DTO(app);
+        AppDTO appDTO = new AppDTO();//AppCovert.INSTANCE.entity2DTO(app);
+        BeanUtils.copyProperties(app,appDTO);
         return appDTO;
     }
 
@@ -78,7 +83,13 @@ public class AppServiceImpl implements AppService {
     @Override
     public List<AppDTO> queryAppByMerchant(Long merchantId) {
         List<App> appList = appMapper.selectList(new LambdaQueryWrapper<App>().eq(App::getMerchantId, merchantId));
-        return AppCovert.INSTANCE.listEntity2DTO(appList);
+        List<AppDTO> appDTOS = new ArrayList<>();
+        for (App app : appList) {
+            AppDTO appDTO = new AppDTO();
+            BeanUtils.copyProperties(app,appDTO);
+            appDTOS.add(appDTO);
+        }
+        return appDTOS;
     }
 
     /**

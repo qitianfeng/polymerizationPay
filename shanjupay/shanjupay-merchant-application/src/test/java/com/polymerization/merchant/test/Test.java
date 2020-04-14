@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.MerchantDTO;
-import com.polymerization.merchant.utils.SecurityUtil;
 import com.shanjupay.common.util.EncryptUtil;
 import com.shanjupay.transaction.api.dto.PayChannelDTO;
 import com.shanjupay.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;

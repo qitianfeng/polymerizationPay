@@ -56,7 +56,7 @@
         <!--DEBUG   500-->
         <!--TRACE   600-->
         <!--ALL   Integer.MAX_VALUE-->
-        <Root level="INFO" includeLocation="true">
+        <Root level="DEBUG" includeLocation="true">
             <AppenderRef ref="AsyncAppender"/>
             <AppenderRef ref="Console"/>
         </Root>

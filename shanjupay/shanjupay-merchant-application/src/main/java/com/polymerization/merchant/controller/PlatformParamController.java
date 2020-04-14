@@ -1,8 +1,7 @@
 package com.polymerization.merchant.controller;
 
 
-import com.polymerization.merchant.utils.SecurityUtil;
-import com.shanjupay.common.util.StringUtil;
+import com.polymerization.merchant.common.utils.SecurityUtil;
 import com.shanjupay.transaction.api.dto.PayChannelDTO;
 import com.shanjupay.transaction.api.dto.PayChannelParamDTO;
 import com.shanjupay.transaction.api.dto.PlatformChannelDTO;

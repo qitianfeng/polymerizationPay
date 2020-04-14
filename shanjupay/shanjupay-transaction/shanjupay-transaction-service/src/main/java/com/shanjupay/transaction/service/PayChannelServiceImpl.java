@@ -12,7 +12,6 @@ import com.shanjupay.transaction.api.dto.PayChannelDTO;
 import com.shanjupay.transaction.api.dto.PayChannelParamDTO;
 import com.shanjupay.transaction.api.dto.PlatformChannelDTO;
 import com.shanjupay.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
-import com.shanjupay.transaction.convert.PlatformChannelConvert;
 import com.shanjupay.transaction.entity.AppPlatformChannel;
 import com.shanjupay.transaction.entity.PayChannel;
 import com.shanjupay.transaction.entity.PayChannelParam;
@@ -182,7 +181,7 @@ public class PayChannelServiceImpl implements PayChannelService {
         Boolean exists = cache.exists(keyBuilder);
         if (exists) {
             String value = cache.get(keyBuilder);
-            List<PayChannelParamDTO> payChannelParamDTO = JSONObject.parseObject(value, (Type) PayChannelParamDTO.class);
+            List<PayChannelParamDTO> payChannelParamDTO = JSON.parseArray(value,  PayChannelParamDTO.class);
             return payChannelParamDTO;
         }
 
