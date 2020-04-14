@@ -69,7 +69,7 @@ public class MyBatisPlusGenerator {
 
 		// 交易服务
 		dataSourceConfig
-				.setUrl("jdbc:mysql://101.132.142.155:3306/shanjupay_merchant_service?serverTimezone=Asia/Shanghai");
+				.setUrl("jdbc:mysql://101.132.142.155:3306/xxxxx");
 		// dataSourceConfig.setSchemaName("public");
 		dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
 		dataSourceConfig.setUsername("root");
