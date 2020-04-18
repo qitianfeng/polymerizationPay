@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polymerization.transaction.mapper.PlatformChannelMapper">
+    <select id="selectPayChannelByPlatformChannel" parameterType="java.lang.String" resultType="com.polymerization.transaction.entity.PlatformChannel" >
+        select pay.*
+        from pay_channel pay,
+             platform_pay_channel pac,
+             platform_channel pla
+        where
+            pay.CHANNEL_CODE = pac.PAY_CHANNEL
+          and pla.CHANNEL_CODE = pac.PLATFORM_CHANNEL
+          and pla.CHANNEL_CODE = #{platformChannelCode}
+    </select>
+</mapper>
