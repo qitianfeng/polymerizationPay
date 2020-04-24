@@ -1,4 +1,4 @@
-package com.shanjupay.user;
+package com.polymerization.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

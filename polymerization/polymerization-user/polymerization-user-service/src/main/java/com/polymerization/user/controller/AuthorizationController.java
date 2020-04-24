@@ -1,4 +1,4 @@
-package com.shanjupay.user.controller;
+package com.polymerization.user.controller;
 
 import com.polymerization.user.api.AuthorizationService;
 import com.polymerization.user.api.dto.authorization.AuthorizationInfoDTO;

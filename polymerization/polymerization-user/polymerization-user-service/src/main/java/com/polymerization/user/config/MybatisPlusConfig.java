@@ -1,4 +1,4 @@
-package com.shanjupay.user.config;
+package com.polymerization.user.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;

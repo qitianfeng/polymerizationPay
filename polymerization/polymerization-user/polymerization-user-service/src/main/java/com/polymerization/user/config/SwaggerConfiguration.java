@@ -1,4 +1,4 @@
-package com.shanjupay.user.config;
+package com.polymerization.user.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

@@ -1,20 +1,10 @@
 package com.polymerization.merchant.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.polymerization.merchant.api.AppService;
-import com.polymerization.merchant.api.dto.AppDTO;
 import com.polymerization.merchant.entity.App;
 import com.polymerization.merchant.entity.Merchant;
 import com.polymerization.merchant.mapper.AppMapper;
 import com.polymerization.merchant.mapper.MerchantMapper;
-import com.polymerization.common.domain.BusinessException;
-import com.polymerization.common.domain.CommonErrorCode;
-import com.polymerization.common.util.RandomStringUtil;
-import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

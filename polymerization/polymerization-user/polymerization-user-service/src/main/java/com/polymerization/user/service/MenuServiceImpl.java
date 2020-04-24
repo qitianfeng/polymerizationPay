@@ -1,4 +1,4 @@
-package com.shanjupay.user.service;
+package com.polymerization.user.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -6,8 +6,8 @@ import com.polymerization.common.domain.PageVO;
 import com.polymerization.user.api.MenuService;
 import com.polymerization.user.api.dto.menu.MenuDTO;
 import com.polymerization.user.api.dto.menu.MenuQueryDTO;
-import com.shanjupay.user.entity.ResourceMenu;
-import com.shanjupay.user.mapper.ResourceMenuMapper;
+import com.polymerization.user.entity.ResourceMenu;
+import com.polymerization.user.mapper.ResourceMenuMapper;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

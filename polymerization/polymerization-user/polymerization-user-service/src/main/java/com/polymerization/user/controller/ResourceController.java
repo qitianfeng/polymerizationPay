@@ -1,4 +1,4 @@
-package com.shanjupay.user.controller;
+package com.polymerization.user.controller;
 
 import com.polymerization.common.domain.PageVO;
 import com.polymerization.user.api.MenuService;

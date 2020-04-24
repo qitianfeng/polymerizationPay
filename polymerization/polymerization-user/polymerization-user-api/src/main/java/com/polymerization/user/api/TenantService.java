@@ -4,7 +4,6 @@ import com.polymerization.common.domain.BusinessException;
 import com.polymerization.common.domain.PageVO;
 import com.polymerization.user.api.dto.tenant.*;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
-import com.shanjupay.user.api.dto.tenant.*;
 
 import java.util.List;
 

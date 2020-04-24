@@ -1,7 +1,7 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shanjupay.user.entity.AccountRole;
+import com.polymerization.user.entity.AccountRole;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;

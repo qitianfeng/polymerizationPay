@@ -1,4 +1,4 @@
-package com.shanjupay.user.service;
+package com.polymerization.user.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -19,8 +19,8 @@ import com.polymerization.user.api.dto.authorization.AuthorizationInfoDTO;
 import com.polymerization.user.api.dto.authorization.RoleDTO;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
 import com.polymerization.user.api.dto.tenant.*;
-import com.shanjupay.user.entity.*;
-import com.shanjupay.user.mapper.*;
+import com.polymerization.user.entity.*;
+import com.polymerization.user.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;

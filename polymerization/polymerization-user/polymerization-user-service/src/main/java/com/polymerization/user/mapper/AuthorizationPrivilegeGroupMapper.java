@@ -1,8 +1,8 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
-import com.polymerization.user.api.dto.authorization.PrivilegeTreeDTO;
-import com.shanjupay.user.entity.AuthorizationPrivilegeGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.polymerization.user.api.dto.authorization.PrivilegeTreeDTO;
+import com.polymerization.user.entity.AuthorizationPrivilegeGroup;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 

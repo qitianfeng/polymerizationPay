@@ -1,7 +1,7 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
-import com.shanjupay.user.entity.Bundle;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.polymerization.user.entity.Bundle;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

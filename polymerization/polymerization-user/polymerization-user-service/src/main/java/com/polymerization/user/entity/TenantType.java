@@ -1,4 +1,4 @@
-package com.shanjupay.user.entity;
+package com.polymerization.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

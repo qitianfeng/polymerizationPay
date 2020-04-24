@@ -28,5 +28,5 @@ public class StaffRoleDTO implements Serializable {
     private Long tenantId;
 
     @ApiModelProperty("角色包含权限列表")
-    private List<String> privilegeCodes = new ArrayList<>();
-}​
+    private List<String> privilegeCodes = new ArrayList<String>();
+}

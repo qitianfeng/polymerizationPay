@@ -1,8 +1,8 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
-import com.polymerization.user.api.dto.tenant.TenRolePrivilegeDTO;
-import com.shanjupay.user.entity.AuthorizationPrivilege;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.polymerization.user.api.dto.tenant.TenRolePrivilegeDTO;
+import com.polymerization.user.entity.AuthorizationPrivilege;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

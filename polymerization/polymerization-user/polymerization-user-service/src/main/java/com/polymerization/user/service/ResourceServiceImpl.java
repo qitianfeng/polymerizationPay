@@ -1,4 +1,4 @@
-package com.shanjupay.user.service;
+package com.polymerization.user.service;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,12 +11,12 @@ import com.polymerization.user.api.dto.authorization.AuthorizationInfoDTO;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
 import com.polymerization.user.api.dto.resource.ApplicationQueryParams;
 import com.polymerization.user.api.dto.resource.ResourceDTO;
-import com.shanjupay.user.entity.ResourceApplication;
-import com.shanjupay.user.entity.ResourceButton;
-import com.shanjupay.user.entity.ResourceMenu;
-import com.shanjupay.user.mapper.ResourceApplicationMapper;
-import com.shanjupay.user.mapper.ResourceButtonMapper;
-import com.shanjupay.user.mapper.ResourceMenuMapper;
+import com.polymerization.user.entity.ResourceApplication;
+import com.polymerization.user.entity.ResourceButton;
+import com.polymerization.user.entity.ResourceMenu;
+import com.polymerization.user.mapper.ResourceApplicationMapper;
+import com.polymerization.user.mapper.ResourceButtonMapper;
+import com.polymerization.user.mapper.ResourceMenuMapper;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shanjupay.user.entity.ResourceButton;
+import com.polymerization.user.entity.ResourceButton;
 import org.springframework.stereotype.Repository;
 
 

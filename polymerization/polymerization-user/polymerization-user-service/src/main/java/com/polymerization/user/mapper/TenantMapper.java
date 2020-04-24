@@ -1,4 +1,4 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -6,7 +6,7 @@ import com.polymerization.user.api.dto.tenant.AccountRoleDTO;
 import com.polymerization.user.api.dto.tenant.AccountRoleQueryDTO;
 import com.polymerization.user.api.dto.tenant.TenantDTO;
 import com.polymerization.user.api.dto.tenant.TenantQueryDTO;
-import com.shanjupay.user.entity.Tenant;
+import com.polymerization.user.entity.Tenant;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

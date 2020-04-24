@@ -1,10 +1,10 @@
-package com.shanjupay.user.mapper;
+package com.polymerization.user.mapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
 import com.polymerization.user.api.dto.resource.ApplicationQueryParams;
-import com.shanjupay.user.entity.ResourceApplication;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.polymerization.user.entity.ResourceApplication;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
