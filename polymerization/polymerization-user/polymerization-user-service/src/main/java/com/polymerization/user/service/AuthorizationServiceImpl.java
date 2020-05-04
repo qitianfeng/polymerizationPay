@@ -14,6 +14,10 @@ import com.polymerization.user.api.dto.authorization.PrivilegeTreeDTO;
 import com.polymerization.user.api.dto.authorization.RoleDTO;
 import com.polymerization.user.api.dto.tenant.AccountRoleDTO;
 import com.polymerization.user.api.dto.tenant.TenRolePrivilegeDTO;
+import com.polymerization.user.convert.AuthorizationPrivilegeConvert;
+import com.polymerization.user.convert.AuthorizationRoleConvert;
+import com.polymerization.user.entity.*;
+import com.polymerization.user.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
@@ -28,17 +32,17 @@ import java.util.stream.Collectors;
 public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Autowired
-    private com.shanjupay.user.mapper.AuthorizationRoleMapper roleMapper;
+    private AuthorizationRoleMapper roleMapper;
     @Autowired
-    private com.shanjupay.user.mapper.AuthorizationPrivilegeMapper privilegeMapper;
+    private AuthorizationPrivilegeMapper privilegeMapper;
     @Autowired
-    private com.shanjupay.user.mapper.AccountMapper accountMapper;
+    private AccountMapper accountMapper;
     @Autowired
-    private com.shanjupay.user.mapper.AccountRoleMapper accountRoleMapper;
+    private AccountRoleMapper accountRoleMapper;
     @Autowired
-    private com.shanjupay.user.mapper.AuthorizationRolePrivilegeMapper rolePrivilegeMapper;
+    private AuthorizationRolePrivilegeMapper rolePrivilegeMapper;
     @Autowired
-    private com.shanjupay.user.mapper.AuthorizationPrivilegeGroupMapper groupMapper;
+    private AuthorizationPrivilegeGroupMapper groupMapper;
 
 
     /**
@@ -89,21 +93,16 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public List<PrivilegeDTO> queryPrivilege(Long tenantId, String[] roleCodes) {
         //先获取某租户下的角色
-        List<com.shanjupay.user.entity.AuthorizationRole> roles = roleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId)
-                .in(com.shanjupay.user.entity.AuthorizationRole::getCode, roleCodes));
+        List<AuthorizationRole> roles = roleMapper.selectList(new QueryWrapper<AuthorizationRole>().lambda()
+                .eq(AuthorizationRole::getTenantId, tenantId)
+                .in(AuthorizationRole::getCode, roleCodes));
         //获取多个角色的权限权限集合
-        List<com.shanjupay.user.entity.AuthorizationPrivilege> privileges = new ArrayList<>();
+        List<AuthorizationPrivilege> privileges = new ArrayList<>();
         if (!roles.isEmpty()) {
-            List<Long> roleIds = roles.stream().map(com.shanjupay.user.entity.AuthorizationRole::getId).collect(Collectors.toList());
+            List<Long> roleIds = roles.stream().map(AuthorizationRole::getId).collect(Collectors.toList());
             privileges = privilegeMapper.selectPrivilegeByRole(roleIds);
         }
-        List<PrivilegeDTO> privilegeDTOS =  new ArrayList<>();//AuthorizationPrivilegeConvert.INSTANCE.entitylist2dto(privileges);
-        for (com.shanjupay.user.entity.AuthorizationPrivilege privilege : privileges) {
-            PrivilegeDTO privilegeDTO = new PrivilegeDTO();
-            BeanUtils.copyProperties(privilege,privilegeDTO);
-            privilegeDTOS.add(privilegeDTO);
-        }
+        List<PrivilegeDTO> privilegeDTOS = AuthorizationPrivilegeConvert.INSTANCE.entitylist2dto(privileges);
         return privilegeDTOS;
     }
 
@@ -115,14 +114,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     @Override
     public List<PrivilegeDTO> queryPrivilegeByGroupId(Long privilegeGroupId) {
-        List<com.shanjupay.user.entity.AuthorizationPrivilege> privilegeList = privilegeMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AuthorizationPrivilege>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationPrivilege::getPrivilegeGroupId, privilegeGroupId));
-        List<PrivilegeDTO> privilegeDTOS =  new ArrayList<>();//AuthorizationPrivilegeConvert.INSTANCE.entitylist2dto(privileges);
-        for (com.shanjupay.user.entity.AuthorizationPrivilege privilege : privilegeList) {
-            PrivilegeDTO privilegeDTO = new PrivilegeDTO();
-            BeanUtils.copyProperties(privilege,privilegeDTO);
-            privilegeDTOS.add(privilegeDTO);
-        }
+        List<AuthorizationPrivilege> privilegeList = privilegeMapper.selectList(new QueryWrapper<AuthorizationPrivilege>().lambda()
+                .eq(AuthorizationPrivilege::getPrivilegeGroupId, privilegeGroupId));
+        List<PrivilegeDTO> privilegeDTOS = AuthorizationPrivilegeConvert.INSTANCE.entitylist2dto(privilegeList);
         return privilegeDTOS;
     }
 
@@ -141,7 +135,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         pList.clear();
         pList.addAll(h);
         //2.获取所有权限组
-        List<com.shanjupay.user.entity.AuthorizationPrivilegeGroup> groupList = groupMapper.selectList(null);
+        List<AuthorizationPrivilegeGroup> groupList = groupMapper.selectList(null);
 
         Map<String, PrivilegeTreeDTO> groupsMap = new HashMap<>();
         String topId = "top_1";
@@ -151,7 +145,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         topTree.setName(null);
         topTree.setStatus(0);
 
-        for (com.shanjupay.user.entity.AuthorizationPrivilegeGroup g : groupList) {
+        for (AuthorizationPrivilegeGroup g : groupList) {
             if (g.getParentId() == null) {
                 PrivilegeTreeDTO child = new PrivilegeTreeDTO();
                 child.setId(String.valueOf(g.getId()));
@@ -186,11 +180,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 
     private void privGroupTree(
-            PrivilegeTreeDTO currChild, List<com.shanjupay.user.entity.AuthorizationPrivilegeGroup> groupList, Map<String, PrivilegeTreeDTO> groupsMap) {
+            PrivilegeTreeDTO currChild, List<AuthorizationPrivilegeGroup> groupList, Map<String, PrivilegeTreeDTO> groupsMap) {
         if (!groupsMap.containsKey(currChild.getId())) {
             groupsMap.put(currChild.getId(), currChild);
         }
-        for (com.shanjupay.user.entity.AuthorizationPrivilegeGroup ccGroup : groupList) {
+        for (AuthorizationPrivilegeGroup ccGroup : groupList) {
             if (String.valueOf(ccGroup.getParentId()).equals(currChild.getId())) {
 
                 PrivilegeTreeDTO tmp = new PrivilegeTreeDTO();
@@ -228,8 +222,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if (isExistRoleCode(tenantId, code)) {
             throw new BusinessException(CommonErrorCode.E_110002);
         }
-        com.shanjupay.user.entity.AuthorizationRole entity = new com.shanjupay.user.entity.AuthorizationRole();//AuthorizationRoleConvert.INSTANCE.dto2entity(role);
-        BeanUtils.copyProperties(role,entity);
+        AuthorizationRole entity = AuthorizationRoleConvert.INSTANCE.dto2entity(role);
         roleMapper.insert(entity);
     }
 
@@ -257,8 +250,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if (b) {
             throw new BusinessException(CommonErrorCode.E_110004);
         }
-        com.shanjupay.user.entity.AuthorizationRole role = roleMapper.selectOne(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId).eq(com.shanjupay.user.entity.AuthorizationRole::getCode, roleCode));
+        AuthorizationRole role = roleMapper.selectOne(new QueryWrapper<AuthorizationRole>().lambda()
+                .eq(AuthorizationRole::getTenantId, tenantId).eq(AuthorizationRole::getCode, roleCode));
         if (role != null && role.getId() != null) {
             removeRole(role.getId());
         }
@@ -286,8 +279,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         //UpdateWrapper<AuthorizationRole> uw = new UpdateWrapper<>();
         //uw.lambda().eq(AuthorizationRole::getId,role.getId()).set(AuthorizationRole::getName,role.getName());
         //roleMapper.update(null,uw);
-        com.shanjupay.user.entity.AuthorizationRole entity = new com.shanjupay.user.entity.AuthorizationRole();// AuthorizationRoleConvert.INSTANCE.dto2entity(role);
-        BeanUtils.copyProperties(role,entity);
+        AuthorizationRole entity = AuthorizationRoleConvert.INSTANCE.dto2entity(role);
         roleMapper.updateById(entity);
     }
 
@@ -307,15 +299,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             throw new BusinessException(CommonErrorCode.E_110005);
         }
         //2.根据权限code获取权限实体集合
-        List<com.shanjupay.user.entity.AuthorizationPrivilege> privileges = privilegeMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AuthorizationPrivilege>().lambda()
-                .in(com.shanjupay.user.entity.AuthorizationPrivilege::getCode, privilegeCodes));
+        List<AuthorizationPrivilege> privileges = privilegeMapper.selectList(new QueryWrapper<AuthorizationPrivilege>().lambda()
+                .in(AuthorizationPrivilege::getCode, privilegeCodes));
         if (privileges.isEmpty()) {
             throw new BusinessException(CommonErrorCode.E_110005);
         }
 
         //组装权限id集合
         List<Long> pids = new ArrayList<>();
-        for (com.shanjupay.user.entity.AuthorizationPrivilege p : privileges) {
+        for (AuthorizationPrivilege p : privileges) {
             pids.add(p.getId());
         }
 
@@ -323,8 +315,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if (roleDTOS != null && roleDTOS.getId() != null) {
             Long roleId = roleDTOS.getId();
             //若角色已关联权限，清除
-            rolePrivilegeMapper.delete(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRolePrivilege>().lambda()
-                    .eq(com.shanjupay.user.entity.AuthorizationRolePrivilege::getRoleId, roleId));
+            rolePrivilegeMapper.delete(new QueryWrapper<AuthorizationRolePrivilege>().lambda()
+                    .eq(AuthorizationRolePrivilege::getRoleId, roleId));
         }
 
         //4.将角色和权限进行关联操作authorization_role_privilege表
@@ -339,15 +331,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     @Override
     public List<RoleDTO> queryRole(Long tenantId) {
-        QueryWrapper<com.shanjupay.user.entity.AuthorizationRole> qw = new QueryWrapper<>();
-        qw.lambda().eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId);
-        List<com.shanjupay.user.entity.AuthorizationRole> authorizationRoles = roleMapper.selectList(qw);
-        List<RoleDTO> roleDTOS = new ArrayList<>(); //AuthorizationRoleConvert.INSTANCE.entitylist2dto(authorizationRoles);
-        for (com.shanjupay.user.entity.AuthorizationRole authorizationRole : authorizationRoles) {
-            RoleDTO roleDTO = new RoleDTO();
-            BeanUtils.copyProperties(authorizationRole,roleDTO);
-            roleDTOS.add(roleDTO);
-        }
+        QueryWrapper<AuthorizationRole> qw = new QueryWrapper<>();
+        qw.lambda().eq(AuthorizationRole::getTenantId, tenantId);
+        List<AuthorizationRole> authorizationRoles = roleMapper.selectList(qw);
+        List<RoleDTO> roleDTOS = AuthorizationRoleConvert.INSTANCE.entitylist2dto(authorizationRoles);
         return roleDTOS;
     }
 
@@ -361,15 +348,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     @Override
     public List<RoleDTO> queryRole(Long tenantId, String... roleCodes) {
         List<String> codes = Arrays.asList(roleCodes);
-        List<com.shanjupay.user.entity.AuthorizationRole> authorizationRoles = roleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId)
-                .in(com.shanjupay.user.entity.AuthorizationRole::getCode, codes));
-        List<RoleDTO> roleDTOS = new ArrayList<>();// AuthorizationRoleConvert.INSTANCE.entitylist2dto(authorizationRoles);
-        for (com.shanjupay.user.entity.AuthorizationRole authorizationRole : authorizationRoles) {
-            RoleDTO roleDTO = new RoleDTO();
-            BeanUtils.copyProperties(authorizationRole,roleDTO);
-            roleDTOS.add(roleDTO);
-        }
+        List<AuthorizationRole> authorizationRoles = roleMapper.selectList(new QueryWrapper<AuthorizationRole>().lambda()
+                .eq(AuthorizationRole::getTenantId, tenantId)
+                .in(AuthorizationRole::getCode, codes));
+        List<RoleDTO> roleDTOS = AuthorizationRoleConvert.INSTANCE.entitylist2dto(authorizationRoles);
         return roleDTOS;
     }
 
@@ -383,15 +365,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
      */
     @Override
     public RoleDTO queryTenantRole(Long tenantId, String roleCode) {
-        com.shanjupay.user.entity.AuthorizationRole role = roleMapper.selectOne(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId).eq(com.shanjupay.user.entity.AuthorizationRole::getCode, roleCode));
+        AuthorizationRole role = roleMapper.selectOne(new QueryWrapper<AuthorizationRole>().lambda()
+                .eq(AuthorizationRole::getTenantId, tenantId).eq(AuthorizationRole::getCode, roleCode));
         if (role == null) {
             throw new BusinessException(CommonErrorCode.E_110003);
         }
         Long id = role.getId();
-//        RoleDTO roleDTO = AuthorizationRoleConvert.INSTANCE.entity2dto(role);
-        RoleDTO roleDTO = new RoleDTO();
-        BeanUtils.copyProperties(role,roleDTO);
+        RoleDTO roleDTO = AuthorizationRoleConvert.INSTANCE.entity2dto(role);
         roleDTO.setPrivilegeCodes(roleMapper.selectPrivilegeByRole(id));
 
         return roleDTO;
@@ -424,33 +404,33 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     public void unbindAccountRole(String username, Long tenantId, String[] roleCodes) {
         List<String> roleList = new ArrayList<>(Arrays.asList(roleCodes));
         //根据查询到的角色id清除掉对应租户
-        List<com.shanjupay.user.entity.AuthorizationRole> roles = roleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, tenantId)
-                .in(com.shanjupay.user.entity.AuthorizationRole::getCode, roleList));
+        List<AuthorizationRole> roles = roleMapper.selectList(new QueryWrapper<AuthorizationRole>().lambda()
+                .eq(AuthorizationRole::getTenantId, tenantId)
+                .in(AuthorizationRole::getCode, roleList));
         if (roles.isEmpty()) {
             throw new BusinessException(CommonErrorCode.E_100104);
         }
         List<Long> roleIds = new ArrayList<>();
-        for (com.shanjupay.user.entity.AuthorizationRole role : roles) {
+        for (AuthorizationRole role : roles) {
             Long id = role.getId();
             roleIds.add(id);
         }
-        roleMapper.update(null, new UpdateWrapper<com.shanjupay.user.entity.AuthorizationRole>().lambda()
-                .in(com.shanjupay.user.entity.AuthorizationRole::getId, roleIds).set(com.shanjupay.user.entity.AuthorizationRole::getTenantId, null));
+        roleMapper.update(null, new UpdateWrapper<AuthorizationRole>().lambda()
+                .in(AuthorizationRole::getId, roleIds).set(AuthorizationRole::getTenantId, null));
         //根据账号-角色表id清除关系
-        List<com.shanjupay.user.entity.AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AccountRole>().lambda()
-                .eq(com.shanjupay.user.entity.AccountRole::getUsername, username).eq(com.shanjupay.user.entity.AccountRole::getTenantId, tenantId)
-                .in(com.shanjupay.user.entity.AccountRole::getId, roleList));
+        List<AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<AccountRole>().lambda()
+                .eq(AccountRole::getUsername, username).eq(AccountRole::getTenantId, tenantId)
+                .in(AccountRole::getId, roleList));
         if (accountRoles.isEmpty()) {
             throw new BusinessException(CommonErrorCode.E_100104);
         }
         List<Long> ids = new ArrayList<>();
-        for (com.shanjupay.user.entity.AccountRole accountRole : accountRoles) {
+        for (AccountRole accountRole : accountRoles) {
             Long id = accountRole.getId();
             ids.add(id);
         }
-        accountRoleMapper.update(null, new UpdateWrapper<com.shanjupay.user.entity.AccountRole>().lambda()
-                .in(com.shanjupay.user.entity.AccountRole::getId, ids).set(com.shanjupay.user.entity.AccountRole::getRoleCode, null));
+        accountRoleMapper.update(null, new UpdateWrapper<AccountRole>().lambda()
+                .in(AccountRole::getId, ids).set(AccountRole::getRoleCode, null));
 
     }
 
@@ -459,34 +439,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return buildRoleQuery(roleDTO, pageNo, pageSize);
     }
 
-    @Override
-    public List<AccountRoleDTO> queryAccountBindRole(String username, Long tenantId, String[] roleCodes) {
-        List<com.shanjupay.user.entity.AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AccountRole>().lambda()
-                .eq(com.shanjupay.user.entity.AccountRole::getUsername, username).eq(com.shanjupay.user.entity.AccountRole::getTenantId, tenantId)
-                .in(com.shanjupay.user.entity.AccountRole::getRoleCode, roleCodes));
-         List<AccountRoleDTO> list = new ArrayList<>();
-        for (com.shanjupay.user.entity.AccountRole accountRole : accountRoles) {
-
-            AccountRoleDTO accountRoleDTO = new AccountRoleDTO();
-            BeanUtils.copyProperties(accountRole,accountRoleDTO);
-            list.add(accountRoleDTO);
-        }
-        return list;
-    }
-    @Override
-    public List<AccountRoleDTO> queryAccountRole(String username, Long tenantId) {
-        List<com.shanjupay.user.entity.AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<com.shanjupay.user.entity.AccountRole>().lambda()
-                .eq(com.shanjupay.user.entity.AccountRole::getUsername, username).eq(com.shanjupay.user.entity.AccountRole::getTenantId, tenantId));
-        List<AccountRoleDTO> accountRoleDTOS = new ArrayList<>();
-        for (com.shanjupay.user.entity.AccountRole accountRole : accountRoles) {
-
-            AccountRoleDTO accountRoleDTO = new AccountRoleDTO();
-            BeanUtils.copyProperties(accountRole,accountRoleDTO);
-
-            accountRoleDTOS.add(accountRoleDTO);
-        }
-        return accountRoleDTOS;
-    }
     @Override
     public List<RoleDTO> queryRolesByUsername(String username, Long tenantId) {
 //获取员工用户名，即账号的用户名
@@ -504,27 +456,49 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         return roleDTOS;
     }
 
+    @Override
+    public List<AccountRoleDTO> queryAccountBindRole(String username, Long tenantId, String[] roleCodes) {
+        List<String> roleList = new ArrayList<>(Arrays.asList(roleCodes));
+        List<AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<AccountRole>().lambda()
+                .eq(AccountRole::getUsername, username).eq(AccountRole::getTenantId, tenantId)
+                .in(AccountRole::getRoleCode, roleList));
+        List<AccountRoleDTO> accountRoleDTOS = new ArrayList<>();
+        for (AccountRole accountRole : accountRoles) {
+            AccountRoleDTO accountRoleDTO = new AccountRoleDTO();
+            BeanUtils.copyProperties(accountRole, accountRoleDTO);
+            accountRoleDTOS.add(accountRoleDTO);
+        }
+        return accountRoleDTOS;
+    }
+
+    private List<AccountRoleDTO> queryAccountRole(String username, Long tenantId) {
+        List<AccountRole> accountRoles = accountRoleMapper.selectList(new QueryWrapper<AccountRole>().lambda()
+                .eq(AccountRole::getUsername, username).eq(AccountRole::getTenantId, tenantId));
+        List<AccountRoleDTO> accountRoleDTOS = new ArrayList<>();
+        for (AccountRole accountRole : accountRoles) {
+            AccountRoleDTO accountRoleDTO = new AccountRoleDTO();
+            BeanUtils.copyProperties(accountRole, accountRoleDTO);
+            accountRoleDTOS.add(accountRoleDTO);
+        }
+        return accountRoleDTOS;
+
+    }
 
     private PageVO<RoleDTO> buildRoleQuery(RoleDTO roleDTO, Integer pageNo, Integer pageSize) {
         // 创建分页
-        Page<com.shanjupay.user.entity.AuthorizationRole> page = new Page<>(pageNo, pageSize);
+        Page<AuthorizationRole> page = new Page<>(pageNo, pageSize);
         // 构造查询条件
-        QueryWrapper<com.shanjupay.user.entity.AuthorizationRole> qw = new QueryWrapper();
+        QueryWrapper<AuthorizationRole> qw = new QueryWrapper();
         if (null != roleDTO && null != roleDTO.getTenantId()) {
-            qw.lambda().eq(com.shanjupay.user.entity.AuthorizationRole::getTenantId, roleDTO.getTenantId());
+            qw.lambda().eq(AuthorizationRole::getTenantId, roleDTO.getTenantId());
         }
         if (null != roleDTO && null != roleDTO.getName()) {
-            qw.lambda().eq(com.shanjupay.user.entity.AuthorizationRole::getName, roleDTO.getName());
+            qw.lambda().eq(AuthorizationRole::getName, roleDTO.getName());
         }
         // 执行查询
-        IPage<com.shanjupay.user.entity.AuthorizationRole> roleIPage = roleMapper.selectPage(page, qw);
+        IPage<AuthorizationRole> roleIPage = roleMapper.selectPage(page, qw);
         // entity List转DTO List
-        List<RoleDTO> roleList = new ArrayList<>();//AuthorizationRoleConvert.INSTANCE.entitylist2dto(roleIPage.getRecords());
-        for (com.shanjupay.user.entity.AuthorizationRole record : roleIPage.getRecords()) {
-            RoleDTO roleDTO1 = new RoleDTO();
-            BeanUtils.copyProperties(record,roleDTO1);
-            roleList.add(roleDTO1);
-        }
+        List<RoleDTO> roleList = AuthorizationRoleConvert.INSTANCE.entitylist2dto(roleIPage.getRecords());
         // 封装结果集
         return new PageVO<>(roleList, roleIPage.getTotal(), pageNo, pageSize);
     }

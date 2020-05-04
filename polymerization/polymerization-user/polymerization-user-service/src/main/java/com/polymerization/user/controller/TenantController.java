@@ -57,7 +57,7 @@ public class TenantController {
             @ApiImplicitParam(name = "order", value = "顺序", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping("/tenants/page")
-    public PageVO<TenantDTO> queryTenants(@RequestBody TenantQueryDTO tenantQuery,@RequestParam Integer pageNo, Integer pageSize,@RequestParam String sortBy,@RequestParam String order) {
+    public PageVO<TenantDTO> queryTenants(@RequestBody TenantQueryDTO tenantQuery, @RequestParam Integer pageNo, Integer pageSize, @RequestParam String sortBy, @RequestParam String order) {
         return tenantService.queryTenants(tenantQuery, pageNo, pageSize, sortBy, order);
     }
 
@@ -229,7 +229,7 @@ public class TenantController {
             @ApiImplicitParam(name = "order", value = "顺序", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping("/accounts/page")
-    public PageVO<AccountDTO> queryAccount(@RequestBody AccountQueryDTO accountQuery, @RequestParam Integer pageNo, Integer pageSize, @RequestParam String sortBy, @RequestParam String order) {
+    public PageVO<AccountDTO> queryAccount(@RequestBody AccountQueryDTO accountQuery,@RequestParam Integer pageNo, Integer pageSize,@RequestParam String sortBy,@RequestParam String order) {
         return tenantService.queryAccount(accountQuery, pageNo, pageSize, sortBy, order);
     }
 

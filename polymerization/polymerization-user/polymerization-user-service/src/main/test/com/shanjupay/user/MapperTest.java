@@ -28,8 +28,6 @@ import com.shanjupay.user.api.dto.tenant.TenantDTO;
 import com.shanjupay.user.convert.AuthorizationPrivilegeConvert;
 import com.shanjupay.user.convert.AuthorizationRoleConvert;
 import com.shanjupay.user.convert.ResourceMenuConvert;
-import com.shanjupay.user.entity.*;
-import com.shanjupay.user.mapper.*;
 import com.shanjupay.user.service.AuthorizationServiceImpl;
 import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.apache.commons.lang3.StringUtils;

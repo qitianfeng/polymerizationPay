@@ -6,13 +6,12 @@ import com.polymerization.common.domain.PageVO;
 import com.polymerization.user.api.MenuService;
 import com.polymerization.user.api.dto.menu.MenuDTO;
 import com.polymerization.user.api.dto.menu.MenuQueryDTO;
+import com.polymerization.user.convert.ResourceMenuConvert;
 import com.polymerization.user.entity.ResourceMenu;
 import com.polymerization.user.mapper.ResourceMenuMapper;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 @Service
@@ -30,8 +29,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public MenuDTO queryMenu(Long id) {
         ResourceMenu resourceMenu = resourceMenuMapper.selectById(id);
-        MenuDTO menuDTO = new MenuDTO();//ResourceMenuConvert.INSTANCE.entity2dto(resourceMenu);
-        BeanUtils.copyProperties(resourceMenu,menuDTO);
+        MenuDTO menuDTO = ResourceMenuConvert.INSTANCE.entity2dto(resourceMenu);
         return menuDTO;
     }
 
@@ -44,12 +42,7 @@ public class MenuServiceImpl implements MenuService {
     public List<MenuDTO> queryMenuByApplicationCode(String applicationCode) {
         List<ResourceMenu> resourceMenus = resourceMenuMapper.selectList(new QueryWrapper<ResourceMenu>().lambda()
                 .eq(ResourceMenu::getApplicationCode, applicationCode));
-        List<MenuDTO> menuDTOS = new ArrayList<>(); //ResourceMenuConvert.INSTANCE.entitylist2dto(resourceMenus);
-        for (ResourceMenu resourceMenu : resourceMenus) {
-            MenuDTO menuDTO = new MenuDTO();
-            BeanUtils.copyProperties(resourceMenu,menuDTO);
-            menuDTOS.add(menuDTO);
-        }
+        List<MenuDTO> menuDTOS = ResourceMenuConvert.INSTANCE.entitylist2dto(resourceMenus);
         return menuDTOS;
     }
 
@@ -78,12 +71,7 @@ public class MenuServiceImpl implements MenuService {
         List<String> privilege= Arrays.asList(privileges);
         List<ResourceMenu> resourceMenus = resourceMenuMapper.selectList(new QueryWrapper<ResourceMenu>().lambda()
                 .in(ResourceMenu::getPrivilegeCode, privilege));
-        List<MenuDTO> menuDTOS =  new ArrayList<>(); //ResourceMenuConvert.INSTANCE.entitylist2dto(resourceMenus);
-        for (ResourceMenu resourceMenu : resourceMenus) {
-            MenuDTO menuDTO = new MenuDTO();
-            BeanUtils.copyProperties(resourceMenu,menuDTO);
-            menuDTOS.add(menuDTO);
-        }
+        List<MenuDTO> menuDTOS = ResourceMenuConvert.INSTANCE.entitylist2dto(resourceMenus);
         return menuDTOS;
     }
 }

@@ -11,7 +11,7 @@ import com.polymerization.common.util.IPUtil;
 import com.polymerization.common.util.ParseURLPairUtil;
 import com.polymerization.paymentagent.api.dto.PaymentResponseDTO;
 import com.polymerization.transaction.api.dto.PayOrderDTO;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.TransactionService;
+import com.polymerization.transaction.api.TransactionService;
 import com.polymerization.transaction.vo.OrderConfirmVO;
 import com.polymerization.transaction.common.util.BrowserType;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +37,7 @@ public class PayController {
     @Reference
     AppService appService;
 
-    @Autowired
+    @Reference
     TransactionService transactionService;
 
     /**

@@ -1,7 +1,7 @@
 package com.polymerization.user.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.polymerization.user.entity.AuthorizationRole;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

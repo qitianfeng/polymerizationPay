@@ -12,7 +12,7 @@ import com.polymerization.merchant.vo.MerchantRegisterVO;
 import com.polymerization.common.domain.BusinessException;
 import com.polymerization.common.domain.CommonErrorCode;
 import com.polymerization.common.util.PhoneUtil;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.TransactionService;
+import com.polymerization.transaction.api.TransactionService;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;

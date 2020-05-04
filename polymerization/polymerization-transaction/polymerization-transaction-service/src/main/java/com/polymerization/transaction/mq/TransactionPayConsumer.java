@@ -3,7 +3,7 @@ package com.polymerization.transaction.mq;
 import com.alibaba.fastjson.JSON;
 import com.polymerization.paymentagent.api.dto.PaymentResponseDTO;
 import com.polymerization.paymentagent.api.dto.TradeStatus;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.TransactionService;
+import com.polymerization.transaction.api.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;

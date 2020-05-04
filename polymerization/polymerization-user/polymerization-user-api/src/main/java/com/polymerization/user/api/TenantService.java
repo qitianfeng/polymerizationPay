@@ -2,8 +2,8 @@ package com.polymerization.user.api;
 
 import com.polymerization.common.domain.BusinessException;
 import com.polymerization.common.domain.PageVO;
-import com.polymerization.user.api.dto.tenant.*;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
+import com.polymerization.user.api.dto.tenant.*;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface TenantService {
      * @param createTenantRequest 创建租户请求信息
      * @return
      */
-    TenantDTO createTenantAndAccount(CreateTenantRequestDTO createTenantRequest);
+     TenantDTO createTenantAndAccount(CreateTenantRequestDTO createTenantRequest);
 
 
     /**
@@ -33,7 +33,7 @@ public interface TenantService {
      * @param createTenantRequest 创建租户请求信息
      * @return
      */
-    TenantDTO createTenantRelateAccount(CreateTenantRequestDTO createTenantRequest);
+     TenantDTO createTenantRelateAccount(CreateTenantRequestDTO createTenantRequest);
 
 
     /**
@@ -49,7 +49,7 @@ public interface TenantService {
      * @param id
      * @return 租户信息
      */
-    TenantDTO getTenant(Long id) throws BusinessException;
+     TenantDTO getTenant(Long id) throws BusinessException;
 
 
     /**
@@ -62,7 +62,7 @@ public interface TenantService {
      * @return
      */
     PageVO<TenantDTO> queryTenants(TenantQueryDTO tenantQuery, Integer pageNo, Integer pageSize, String sortBy,
-			String order) throws BusinessException;
+                                   String order) throws BusinessException;
 
 
 
@@ -79,7 +79,7 @@ public interface TenantService {
      * @param bundleCode 套餐编码
      * @return 套餐信息
      */
-    BundleDTO getBundle(String bundleCode);
+     BundleDTO getBundle(String bundleCode);
 
     /**
      * 查询所有套餐
@@ -106,13 +106,13 @@ public interface TenantService {
      * 新增套餐
      * @param bundleDTO
      */
-    void createBundle(BundleDTO bundleDTO) throws BusinessException;
+    void createBundle( BundleDTO bundleDTO) throws BusinessException;
 
     /**
      * 更新套餐
      * @param bundleDTO
      */
-    void modifyBundle(BundleDTO bundleDTO) throws BusinessException;
+    void modifyBundle( BundleDTO bundleDTO) throws BusinessException;
 
     ////////////////////套餐管理end/////////////////////
 
@@ -124,14 +124,14 @@ public interface TenantService {
      * 2.手机号已存在，禁止创建
      * @param createAccountRequest 创建账号请求
      */
-    AccountDTO createAccount(CreateAccountRequestDTO createAccountRequest) throws BusinessException;
+     AccountDTO createAccount(CreateAccountRequestDTO createAccountRequest) throws BusinessException;
 
     /**
      * 修改账号密码
      * @param accountRequest
      * @return
      */
-    boolean accountPassword(ChangeAccountPwdDTO accountRequest);
+    boolean accountPassword( ChangeAccountPwdDTO accountRequest);
 
     /**
      * 创建账号并绑定至某租户
@@ -189,14 +189,14 @@ public interface TenantService {
      * @param username 用户名
      * @return 账号信息
      */
-    AccountDTO getAccountByUsername(String username) throws BusinessException;
+     AccountDTO getAccountByUsername(String username) throws BusinessException;
 
     /**
      * 根据手机号获取账号信息
      * @param mobile 手机号
      * @return 账号信息
      */
-    AccountDTO getAccountByMobile(String mobile) throws BusinessException;
+     AccountDTO getAccountByMobile(String mobile) throws BusinessException;
 
 
     /**
@@ -247,7 +247,7 @@ public interface TenantService {
      * @param authenticationInfo 认证请求信息
      * @return 认证成功的账号信息
      */
-    AccountDTO authentication(AuthenticationInfo authenticationInfo) throws BusinessException;
+     AccountDTO authentication(AuthenticationInfo authenticationInfo) throws BusinessException;
 
 
     /**
@@ -266,7 +266,7 @@ public interface TenantService {
      * 3.token不能跨不同租户开发的应用
      *
      */
-    LoginInfoDTO login(LoginRequestDTO loginRequest) throws BusinessException;
+     LoginInfoDTO login(LoginRequestDTO loginRequest) throws BusinessException;
 
     /**
      * 根据接入客户端获取应用
@@ -292,7 +292,7 @@ public interface TenantService {
      * @param tenantId
      * @return
      */
-    AccountRoleQueryDTO queryAccountRole(String username, String roleCode, Long tenantId);
+     AccountRoleQueryDTO queryAccountRole(String username, String roleCode, Long tenantId);
 
     /**
      * 分页条件查询管理员
@@ -302,7 +302,7 @@ public interface TenantService {
      * @return
      */
     PageVO<AccountRoleQueryDTO> queryAdministratorByPage(AccountRoleDTO accountRoleDTO, Integer pageNo,
-			Integer pageSize);
+                                                         Integer pageSize);
 
     void checkCreateStaffAccountRole(Long tenantId, CreateAccountRequestDTO accountRequest, String[] roleCodes);
 

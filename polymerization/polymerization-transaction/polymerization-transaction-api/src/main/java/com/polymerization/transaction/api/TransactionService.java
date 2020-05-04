@@ -1,4 +1,5 @@
-package com.polymerization.transaction.api.dto.com.shanjupay.transaction.api;
+package com.polymerization.transaction.api;
+
 
 import com.polymerization.common.domain.BusinessException;
 import com.polymerization.paymentagent.api.dto.PaymentResponseDTO;

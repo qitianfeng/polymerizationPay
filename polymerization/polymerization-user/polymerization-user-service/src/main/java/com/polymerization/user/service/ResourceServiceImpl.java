@@ -11,6 +11,7 @@ import com.polymerization.user.api.dto.authorization.AuthorizationInfoDTO;
 import com.polymerization.user.api.dto.resource.ApplicationDTO;
 import com.polymerization.user.api.dto.resource.ApplicationQueryParams;
 import com.polymerization.user.api.dto.resource.ResourceDTO;
+import com.polymerization.user.convert.ResourceApplicationConvert;
 import com.polymerization.user.entity.ResourceApplication;
 import com.polymerization.user.entity.ResourceButton;
 import com.polymerization.user.entity.ResourceMenu;
@@ -18,7 +19,6 @@ import com.polymerization.user.mapper.ResourceApplicationMapper;
 import com.polymerization.user.mapper.ResourceButtonMapper;
 import com.polymerization.user.mapper.ResourceMenuMapper;
 import org.apache.dubbo.config.annotation.Service;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -44,8 +44,7 @@ public class ResourceServiceImpl implements ResourceService {
      */
     @Override
     public void createApplication(ApplicationDTO application) {
-        ResourceApplication entity = new ResourceApplication();//ResourceApplicationConvert.INSTANCE.dto2entity(application);
-        BeanUtils.copyProperties(application,entity);
+        ResourceApplication entity = ResourceApplicationConvert.INSTANCE.dto2entity(application);
         applicationMapper.insert(entity);
     }
 
@@ -57,8 +56,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public void modifyApplication(ApplicationDTO application) {
         Assert.notNull(application,"对象不能为空");
-        ResourceApplication entity = new ResourceApplication();// ResourceApplicationConvert.INSTANCE.dto2entity(application);
-        BeanUtils.copyProperties(application,entity);
+        ResourceApplication entity = ResourceApplicationConvert.INSTANCE.dto2entity(application);
         applicationMapper.updateById(entity);
     }
 
@@ -87,8 +85,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public ApplicationDTO queryApplication(String applicationCode) {
         ResourceApplication application = applicationMapper.selectOne(new QueryWrapper<ResourceApplication>().lambda().eq(ResourceApplication::getCode, applicationCode));
-        ApplicationDTO applicationDTO = new ApplicationDTO();//ResourceApplicationConvert.INSTANCE.entity2dto(application);
-        BeanUtils.copyProperties(application,applicationDTO);
+        ApplicationDTO applicationDTO = ResourceApplicationConvert.INSTANCE.entity2dto(application);
         return applicationDTO;
     }
 

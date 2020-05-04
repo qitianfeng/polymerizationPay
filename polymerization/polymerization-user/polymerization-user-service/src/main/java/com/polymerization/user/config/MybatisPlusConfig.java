@@ -14,7 +14,7 @@ import java.util.Properties;
  * </p>
  */
 @Configuration
-@MapperScan("com.shanjupay.**.mapper")
+@MapperScan("com.polymerization.**.mapper")
 public class MybatisPlusConfig {
 
 	/**

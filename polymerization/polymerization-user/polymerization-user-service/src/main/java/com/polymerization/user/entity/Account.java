@@ -6,12 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 
 @Data
-@TableName(value = "account")
+@TableName("account")
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -19,9 +18,7 @@ public class Account implements Serializable {
 	/**
 	 * 主键
 	 */
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@TableId(value="ID",type = IdType.AUTO)
 	private Long id;
 
 	/**

@@ -52,7 +52,7 @@ public interface ResourceService {
      * @return
      */
     PageVO<ApplicationDTO> pageApplicationByConditions(ApplicationQueryParams query,
-                                                     Integer pageNo, Integer pageSize) throws BusinessException;
+                                                       Integer pageNo, Integer pageSize) throws BusinessException;
 
     /**
      * 根据权限加载指定应用的资源

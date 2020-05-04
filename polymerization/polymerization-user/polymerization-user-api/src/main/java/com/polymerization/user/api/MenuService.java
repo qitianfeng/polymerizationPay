@@ -32,7 +32,7 @@ public interface MenuService {
      * @param pageSize
      * @param pageNo
      */
-    PageVO<MenuDTO>  queryMenu(MenuQueryDTO params, Integer pageNo, Integer pageSize) throws BusinessException;
+    PageVO<MenuDTO> queryMenu(MenuQueryDTO params, Integer pageNo, Integer pageSize) throws BusinessException;
 
     /**
      * 根据权限编码列表获取菜单

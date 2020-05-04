@@ -8,6 +8,7 @@ import com.polymerization.paymentagent.api.conf.WXConfigParam;
 import com.polymerization.paymentagent.api.dto.PaymentResponseDTO;
 import com.polymerization.paymentagent.api.dto.TradeStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
@@ -27,7 +28,7 @@ public class PayConsumer implements RocketMQListener<MessageExt> {
     @Autowired
     PayProducer payProducer;
 
-    @Autowired
+    @Reference
     PayChannelAgentService payChannelAgentService;
     @Override
     public void onMessage(MessageExt messageExt) {

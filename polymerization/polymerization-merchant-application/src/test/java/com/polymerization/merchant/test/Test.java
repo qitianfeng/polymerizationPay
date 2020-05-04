@@ -6,7 +6,7 @@ import com.polymerization.merchant.api.MerchantService;
 import com.polymerization.merchant.api.dto.MerchantDTO;
 import com.polymerization.common.util.EncryptUtil;
 import com.polymerization.transaction.api.dto.PayChannelDTO;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
+import com.polymerization.transaction.api.PayChannelService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

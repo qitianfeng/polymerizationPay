@@ -1,11 +1,11 @@
 package com.polymerization.user.api;
 
-import com.polymerization.common.domain.BusinessException;
-import com.polymerization.common.domain.PageVO;
 import com.polymerization.user.api.dto.authorization.AuthorizationInfoDTO;
 import com.polymerization.user.api.dto.authorization.PrivilegeDTO;
-import com.polymerization.user.api.dto.authorization.PrivilegeTreeDTO;
 import com.polymerization.user.api.dto.authorization.RoleDTO;
+import com.polymerization.common.domain.BusinessException;
+import com.polymerization.common.domain.PageVO;
+import com.polymerization.user.api.dto.authorization.PrivilegeTreeDTO;
 import com.polymerization.user.api.dto.tenant.AccountRoleDTO;
 
 import java.util.List;
@@ -144,10 +144,7 @@ public interface AuthorizationService {
      */
     PageVO<RoleDTO> queryRoleByPage(RoleDTO roleDTO, Integer pageNo, Integer pageSize);
 
-    List<AccountRoleDTO> queryAccountBindRole(String username, Long tenantId, String[] roleCodes);
-
-    List<AccountRoleDTO> queryAccountRole(String username, Long tenantId);
-
     List<RoleDTO> queryRolesByUsername(String username, Long tenantId);
 
+    List<AccountRoleDTO> queryAccountBindRole(String username, Long tenantId, String[] roleCodes);
 }

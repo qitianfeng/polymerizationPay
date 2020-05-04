@@ -9,7 +9,7 @@ import com.polymerization.common.util.RedisUtil;
 import com.polymerization.transaction.api.dto.PayChannelDTO;
 import com.polymerization.transaction.api.dto.PayChannelParamDTO;
 import com.polymerization.transaction.api.dto.PlatformChannelDTO;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
+import com.polymerization.transaction.api.PayChannelService;
 import com.polymerization.transaction.entity.AppPlatformChannel;
 import com.polymerization.transaction.entity.PayChannelParam;
 import com.polymerization.transaction.entity.PlatformChannel;

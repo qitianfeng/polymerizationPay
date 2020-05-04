@@ -10,33 +10,36 @@ import com.polymerization.user.entity.TenantAccount;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
+@Repository
 public interface AccountMapper extends BaseMapper<Account> {
 
     @Select("select count(*) from account where mobile = #{mobile} " +
             "and exists (select ACCOUNT_ID ID from tenant_account where TENANT_ID=#{tenantId})")
-    int selectAccountInTenantByMobile(@Param("tenantId") Long tenantId, @Param("mobile") String mobile);
+    int selectAccountInTenantByMobile(@Param("tenantId")Long tenantId,@Param("mobile")String mobile);
 
     @Select("select count(*) from account where USERNAME = #{username} " +
             "and exists (select ACCOUNT_ID ID from tenant_account where TENANT_ID=#{tenantId})")
-    int selectAccountInTenantByName(@Param("tenantId") Long tenantId, @Param("username") String username);
+    int selectAccountInTenantByName(@Param("tenantId")Long tenantId,@Param("username")String username);
 
+    @Select("select count(*) from account where MOBILE=#{mobile}")
     int selectAccountByMobile(@Param("mobile") String mobile);
 
     @Select("select count(*) from account where USERNAME=#{username}")
     int selectAccountByName(@Param("username") String username);
 
     @Delete("delete from account where ID=#{accountId}")
-    void deleteAccount(@Param("accountId") Long accountId);
+    void deleteAccount(@Param("accountId")Long accountId);
 
     @Select("select t.* from account a,tenant_account t "
-            + "where a.id=t.ACCOUNT_ID "
-            + "and TENANT_ID=#{tenantId} "
-            + "and a.USERNAME=#{username} "
-            + "and t.IS_ADMIN!=1")
+            +"where a.id=t.ACCOUNT_ID "
+            +"and TENANT_ID=#{tenantId} "
+            +"and a.USERNAME=#{username} "
+            +"and t.IS_ADMIN!=1")
     List<TenantAccount> selectNotAdmin(@Param("tenantId") Long tenantId, @Param("username") String username);
 
     @Select("select * from account a " +
@@ -44,7 +47,7 @@ public interface AccountMapper extends BaseMapper<Account> {
             "LEFT JOIN authorization_role r ON r.`CODE`=ar.ROLE_CODE " +
             "WHERE r.TENANT_ID=#{tenantId}  " +
             "AND r.`CODE`=#{roleCode} ")
-    boolean selectAccountByRole(@Param("tenantId") Long tenantId, @Param("tenantId") String roleCode);
+    boolean selectAccountByRole(@Param("tenantId") Long tenantId,@Param("tenantId") String roleCode);
 
     @Select("<script>"
             + "select * from account a "
@@ -63,8 +66,8 @@ public interface AccountMapper extends BaseMapper<Account> {
             + "</where>"
             + " ORDER BY #{sortBy} #{order} "
             + "</script>")
-    List<AccountDTO> selectAccountByPage(@Param("page") Page<AccountDTO> page, @Param("accountQuery") AccountQueryDTO accountQuery,
-                                         @Param("sortBy") String sortBy, @Param("order") String order);
+    List<AccountDTO> selectAccountByPage(@Param("page")Page<AccountDTO> page,@Param("accountQuery") AccountQueryDTO accountQuery,
+                                 @Param("sortBy") String sortBy,@Param("order") String order);
 
     @Select("select a.id from account a " +
             "left join tenant_account ta on ta.ACCOUNT_ID=a.ID " +
@@ -74,7 +77,6 @@ public interface AccountMapper extends BaseMapper<Account> {
 
     /**
      * 根据租户id查询账号的信息
-     *
      * @param tenantId
      * @return
      */

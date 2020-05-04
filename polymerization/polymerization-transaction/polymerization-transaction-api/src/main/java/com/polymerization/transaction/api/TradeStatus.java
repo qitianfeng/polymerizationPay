@@ -1,4 +1,4 @@
-package com.polymerization.transaction.api.dto.com.shanjupay.transaction.api;
+package com.polymerization.transaction.api;
 
 public enum TradeStatus {
     SUCCESS,  // 业务交易支付 明确成功

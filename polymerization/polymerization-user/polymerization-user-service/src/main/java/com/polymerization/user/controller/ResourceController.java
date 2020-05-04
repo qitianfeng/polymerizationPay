@@ -72,7 +72,7 @@ public class ResourceController {
             @ApiImplicitParam(name = "pageSize", value = "每页记录数", required = true, dataType = "int", paramType = "query")
     })
     @GetMapping("/apps/page")
-    public PageVO<ApplicationDTO> pageApplicationByConditions(@RequestBody ApplicationQueryParams query,@RequestParam Integer pageNo,@RequestParam Integer pageSize) {
+    public PageVO<ApplicationDTO> pageApplicationByConditions(@RequestBody ApplicationQueryParams query, @RequestParam Integer pageNo, @RequestParam Integer pageSize) {
         return resourceService.pageApplicationByConditions(query, pageNo, pageSize);
     }
 

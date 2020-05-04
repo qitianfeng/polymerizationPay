@@ -7,7 +7,7 @@ import com.polymerization.common.domain.CommonErrorCode;
 import com.polymerization.transaction.api.dto.PayChannelDTO;
 import com.polymerization.transaction.api.dto.PayChannelParamDTO;
 import com.polymerization.transaction.api.dto.PlatformChannelDTO;
-import com.polymerization.transaction.api.dto.com.shanjupay.transaction.api.PayChannelService;
+import com.polymerization.transaction.api.PayChannelService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

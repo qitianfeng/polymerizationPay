@@ -38,7 +38,7 @@ spring:
 dubbo:
   scan:
     # dubbo 服务扫描基准包
-    base-packages: com.shanjupay
+    base-packages: com.polymerization
   protocol:
     # dubbo 协议
     name: dubbo
